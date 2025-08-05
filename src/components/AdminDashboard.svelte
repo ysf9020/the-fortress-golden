@@ -140,6 +140,7 @@
   $: proformaSentPartners = partners.filter(partner => partner.status === 'proforma_sent');
   $: paymentVerifiedPartners = partners.filter(partner => partner.status === 'payment_verified');
   $: activePartners = partners.filter(partner => partner.status === 'active');
+
 </script>
 
 <div class="bg-white rounded-lg shadow-md p-6">
@@ -460,4 +461,5 @@
       <p class="text-gray-500 italic">No active partners at this time.</p>
     {/if}
   </div>
+
 </div>
