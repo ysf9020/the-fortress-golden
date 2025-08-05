@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AdminDashboard from '../components/AdminDashboard.svelte';
+---
+
+<Layout title="Admin Dashboard">
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+
+    <!-- Password Protection -->
+    <div id="passwordProtection" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Enter Password</h2>
+      <input 
+        type="password" 
+        id="adminPassword" 
+        class="w-full px-4 py-2 border border-gray-300 rounded-md mb-4"
+        placeholder="Enter admin password"
+      />
+      <button 
+        id="loginButton" 
+        class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition duration-300"
+      >
+        Access Dashboard
+      </button>
+      <p id="errorMessage" class="text-red-500 mt-2 hidden">Incorrect password. Please try again.</p>
+    </div>
+
+    <!-- Dashboard Content (hidden until authenticated) -->
+    <div id="dashboardContent" class="hidden">
+      <AdminDashboard client:load />
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const passwordInput = document.getElementById('adminPassword');
+      const loginButton = document.getElementById('loginButton');
+      const errorMessage = document.getElementById('errorMessage');
+      const passwordProtection = document.getElementById('passwordProtection');
+      const dashboardContent = document.getElementById('dashboardContent');
+
+      // Get password from environment variable
+      const adminPassword = import.meta.env.ADMIN_PASSWORD || 'fortress2025';
+
+      loginButton.addEventListener('click', () => {
+        if (passwordInput.value === adminPassword) {
+          passwordProtection.classList.add('hidden');
+          dashboardContent.classList.remove('hidden');
+          errorMessage.classList.add('hidden');
+        } else {
+          errorMessage.classList.remove('hidden');
+          passwordInput.value = '';
+        }
+      });
+
+      // Allow Enter key to submit
+      passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          loginButton.click();
+        }
+      });
+    });
+  </script>
+</Layout>

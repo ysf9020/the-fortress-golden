@@ -1,0 +1,55 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  url?: string;
+  type?: string;
+  keywords?: string;
+}
+
+const {
+  title,
+  description,
+  image = '/assets/og-default.jpg',
+  url = Astro.url.href,
+  type = 'website',
+  keywords = 'wholesale, B2B, home cleaning, distribution, fortress'
+} = Astro.props;
+
+const siteTitle = 'The Fortress Wholesale Portal';
+const fullTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
+---
+
+<!-- Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+
+<!-- Open Graph -->
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:url" content={url} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={siteTitle} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+<!-- Additional Meta Tags -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="canonical" href={url} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png" />
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json" />
+
+<!-- Theme Color -->
+<meta name="theme-color" content="#1E40AF" />
+<meta name="msapplication-TileColor" content="#1E40AF" />

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /functions/
+
+Sitemap: https://the-fortress-golden.com/sitemap.xml

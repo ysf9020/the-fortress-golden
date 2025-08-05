@@ -1,0 +1,179 @@
+---
+// Imports
+import { ViewTransitions } from 'astro:transitions';
+---
+
+<!-- Wholesale Partnership Form -->
+<form name="wholesale-partnership" method="POST" data-netlify="true" class="space-y-6">
+  <input type="hidden" name="form-name" value="wholesale-partnership" />
+
+  <div>
+    <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+    <input 
+      type="text" 
+      id="fullName" 
+      name="fullName" 
+      required 
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+    <input 
+      type="email" 
+      id="email" 
+      name="email" 
+      required 
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
+    <input 
+      type="text" 
+      id="company" 
+      name="company" 
+      required 
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country *</label>
+    <input 
+      type="text" 
+      id="country" 
+      name="country" 
+      required 
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+    <input 
+      type="tel" 
+      id="phone" 
+      name="phone" 
+      required 
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <label for="storeUrl" class="block text-sm font-medium text-gray-700 mb-1">Store URL (optional)</label>
+    <input 
+      type="url" 
+      id="storeUrl" 
+      name="storeUrl" 
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+    />
+  </div>
+
+  <div>
+    <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+    <textarea 
+      id="message" 
+      name="message" 
+      rows="4" 
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+    ></textarea>
+  </div>
+
+  <div>
+    <button 
+      type="submit" 
+      class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition duration-300"
+    >
+      Submit Application
+    </button>
+  </div>
+</form>
+
+<script>
+  // Generate UUID function
+  function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  // Form validation and submission
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form[name="wholesale-partnership"]');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const requiredFields = form.querySelectorAll('[required]');
+      let isValid = true;
+
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          field.classList.add('border-red-500');
+          isValid = false;
+        } else {
+          field.classList.remove('border-red-500');
+        }
+      });
+
+      if (!isValid) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      // Create partner object
+      const partner = {
+        id: generateUUID(),
+        name: form.fullName.value,
+        email: form.email.value,
+        company: form.company.value,
+        country: form.country.value,
+        phone: form.phone.value,
+        storeUrl: form.storeUrl.value || '',
+        message: form.message.value || '',
+        status: 'pending',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      try {
+        // In a real application, this would be an API call to save the data
+        // For this example, we'll simulate a successful save
+
+        // Show success message
+        const successMessage = document.createElement('div');
+        successMessage.className = 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4';
+        successMessage.textContent = 'Application submitted successfully! We will review your application and contact you soon.';
+        form.parentNode.insertBefore(successMessage, form);
+
+        // Reset form
+        form.reset();
+
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          successMessage.style.display = 'none';
+        }, 5000);
+
+        console.log('Partner data:', partner);
+
+        // In a real app, you would save the data to your database or JSON file
+        // await fetch('/api/save-partner', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(partner),
+        // });
+
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('There was an error submitting your application. Please try again.');
+      }
+    });
+  });
+</script>

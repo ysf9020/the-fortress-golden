@@ -1,0 +1,33 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/"
+  status = 301
+
+[[redirects]]
+  from = "/wholesale"
+  to = "/wholesale/"
+  status = 301
+
+[context.production.environment]
+  ADMIN_PASSWORD = "fortress2025"
+
+[context.deploy-preview.environment]
+  ADMIN_PASSWORD = "fortress2025"
+
+[context.branch-deploy.environment]
+  ADMIN_PASSWORD = "fortress2025"
