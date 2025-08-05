@@ -80,7 +80,6 @@
       partner.status = newStatus;
       partner.updated_at = new Date().toISOString();
       partners = [...partners]; // Trigger reactivity
-
       // In a real app, this would call the Netlify function
       // const response = await fetch('/.netlify/functions/send-email', {
       //   method: 'POST',
@@ -93,10 +92,8 @@
       //     brand: 'fortress' // or any other brand
       //   }),
       // });
-
       // const result = await response.json();
       // console.log('Email sent:', result);
-
       alert(`Partner status updated to ${newStatus} and email notification sent.`);
     }
   }
@@ -120,7 +117,6 @@
   function getStatusBadge(status) {
     const statusOption = statusOptions.find(option => option.value === status);
     if (!statusOption) return `<span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">${status}</span>`;
-
     const colorMap = {
       yellow: 'bg-yellow-100 text-yellow-800',
       blue: 'bg-blue-100 text-blue-800',
@@ -129,7 +125,6 @@
       green: 'bg-green-100 text-green-800',
       emerald: 'bg-emerald-100 text-emerald-800'
     };
-
     return `<span class="px-2 py-1 text-xs rounded-full ${colorMap[statusOption.color]}">${statusOption.label}</span>`;
   }
 
@@ -140,24 +135,25 @@
   $: proformaSentPartners = partners.filter(partner => partner.status === 'proforma_sent');
   $: paymentVerifiedPartners = partners.filter(partner => partner.status === 'payment_verified');
   $: activePartners = partners.filter(partner => partner.status === 'active');
-
+  
+  // إضافة سطر فارغ قبل إغلاق العلامة لضمان سلامة البناء
 </script>
 
 <div class="bg-white rounded-lg shadow-md p-6">
   <h2 class="text-2xl font-bold mb-6">Partnership Management</h2>
-
+  
   <!-- Stats Overview -->
   <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
     {#each statusOptions as status}
-      <div class="bg-{status.color}-50 p-4 rounded-lg border border-{status.color}-200">
-        <h3 class="text-sm font-semibold text-{status.color}-800">{status.label}</h3>
-        <p class="text-2xl font-bold text-{status.color}-600">
+      <div class="p-4 rounded-lg border">
+        <h3 class="text-sm font-semibold">{status.label}</h3>
+        <p class="text-2xl font-bold">
           {partners.filter(p => p.status === status.value).length}
         </p>
       </div>
     {/each}
   </div>
-
+  
   <!-- Pending Partners -->
   {#if pendingPartners.length > 0}
     <div class="mb-8">
@@ -209,7 +205,7 @@
       <p class="text-gray-500 italic">No pending applications at this time.</p>
     </div>
   {/if}
-
+  
   <!-- Pre-Approved Partners -->
   {#if preApprovedPartners.length > 0}
     <div class="mb-8">
@@ -261,7 +257,7 @@
       <p class="text-gray-500 italic">No pre-approved partners at this time.</p>
     </div>
   {/if}
-
+  
   <!-- NDA Signed Partners -->
   {#if ndaSignedPartners.length > 0}
     <div class="mb-8">
@@ -313,7 +309,7 @@
       <p class="text-gray-500 italic">No partners with signed NDA at this time.</p>
     </div>
   {/if}
-
+  
   <!-- Proforma Sent Partners -->
   {#if proformaSentPartners.length > 0}
     <div class="mb-8">
@@ -365,7 +361,7 @@
       <p class="text-gray-500 italic">No partners with proforma invoice sent at this time.</p>
     </div>
   {/if}
-
+  
   <!-- Payment Verified Partners -->
   {#if paymentVerifiedPartners.length > 0}
     <div class="mb-8">
@@ -417,7 +413,7 @@
       <p class="text-gray-500 italic">No partners with verified payment at this time.</p>
     </div>
   {/if}
-
+  
   <!-- Active Partners -->
   <div>
     <h3 class="text-xl font-semibold mb-4">Active Partners</h3>
@@ -461,5 +457,4 @@
       <p class="text-gray-500 italic">No active partners at this time.</p>
     {/if}
   </div>
-
 </div>
